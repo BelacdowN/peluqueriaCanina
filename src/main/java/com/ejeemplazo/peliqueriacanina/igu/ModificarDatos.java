@@ -261,6 +261,10 @@ public class ModificarDatos extends javax.swing.JFrame {
         // mensaje ok
         mostrarMensaje("Edicion Realizada correctamente", "info", "edicion correcta");
         
+        VerDatos pantalla = new VerDatos();
+        pantalla.setVisible(true);
+        pantalla.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     
