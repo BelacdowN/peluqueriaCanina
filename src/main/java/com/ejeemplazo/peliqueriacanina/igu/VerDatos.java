@@ -4,6 +4,8 @@ package com.ejeemplazo.peliqueriacanina.igu;
 import com.ejeemplazo.peliqueriacanina.logica.Controladora;
 import com.ejeemplazo.peliqueriacanina.logica.Mascota;
 import java.util.List;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -60,27 +62,36 @@ public class VerDatos extends javax.swing.JFrame {
         jLabel2.setText("Datos de Mascotas");
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(btnEditar))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel2)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(19, 19, 19)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(btnEditar)
+                .addGap(38, 38, 38))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                    .addContainerGap(494, Short.MAX_VALUE)
+                    .addContainerGap(532, Short.MAX_VALUE)
                     .addComponent(btnEliminar)
                     .addGap(39, 39, 39)))
         );
@@ -116,7 +127,7 @@ public class VerDatos extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,8 +159,66 @@ public class VerDatos extends javax.swing.JFrame {
        cargaTabla();
     }//GEN-LAST:event_formWindowOpened
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+      //si la tabla tiene mas de cero filas
+        if (tablaMascotas.getRowCount() > 0){
+            //que haya seleccionado alguna fila (-1)
+            if(tablaMascotas.getSelectedRow() != -1){
+                //traeme la fila seleccionada, en la posicion 0 (id) y convertila a entero
+                int num_cliente = Integer.parseInt(String.valueOf(tablaMascotas.getValueAt(tablaMascotas.getSelectedRow(), 0)));
+                //llamo al metodo borrar
+                control.borrarMascota(num_cliente);
+                
+                //aviso al usuario que borro corectamente
+                mostrarMensaje ("Mascota eliminada correctamente", "info", "Borrado de mascota");
+                //se recargas la pagina para mostrar los datos actualizados
+                cargaTabla();
+            }
+            else{
+                mostrarMensaje ("No se seleccionó ninguna mascota", "error", "Error al eliminar");
+            }
+        }
+        else{
+            mostrarMensaje ("No hay registros en la tabla", "error", "Error al eliminar");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        //si la tabla tiene mas de cero filas
+        if (tablaMascotas.getRowCount() > 0){
+            //que haya seleccionado alguna fila (-1)
+            if(tablaMascotas.getSelectedRow() != -1){
+                //traeme la fila seleccionada, en la posicion 0 (id) y convertila a entero
+                int num_cliente = Integer.parseInt(String.valueOf(tablaMascotas.getValueAt(tablaMascotas.getSelectedRow(), 0)));
+                
+                ModificarDatos pantallaModif = new ModificarDatos(num_cliente);
+                pantallaModif.setVisible(true);
+                pantallaModif.setLocationRelativeTo(null);
+                
+                
+            }
+            else{
+                mostrarMensaje ("No se seleccionó ninguna mascota", "error", "Error al eliminar");
+            }
+        }
+        else{
+            mostrarMensaje ("No hay registros en la tabla", "error", "Error al eliminar");
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
     
-   
+   public void mostrarMensaje(String mensaje, String tipo, String titulo){
+       JOptionPane optionPane = new JOptionPane(mensaje);
+       if (tipo.equals("Info")){
+                optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+       }
+       else if(tipo.equals("error")){
+           optionPane.setMessageType(JOptionPane.ERROR_MESSAGE);
+       }
+                JDialog dialog = optionPane.createDialog(titulo);
+                dialog.setAlwaysOnTop(true);
+                dialog.setVisible(true);
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
