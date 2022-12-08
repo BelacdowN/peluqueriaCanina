@@ -66,7 +66,7 @@ public class ModificarDatos extends javax.swing.JFrame {
 
         jLabel8.setText("Atencion Especial");
 
-        jLabel9.setText("Cel Dueño:");
+        jLabel9.setText("Celu Dueño:");
 
         jLabel10.setText("Observaciones:");
 

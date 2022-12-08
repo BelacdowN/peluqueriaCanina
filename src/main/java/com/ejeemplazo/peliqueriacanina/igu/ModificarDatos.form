@@ -245,7 +245,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel9">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cel Due&#xf1;o:"/>
+                <Property name="text" type="java.lang.String" value="Celu Due&#xf1;o:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel10">
